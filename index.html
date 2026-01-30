@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestão de Tarefas — Menu</title>
+  <style>
+    :root{
+      --bg:#f5f7fb; --card:#ffffff; --accent:#2563eb; --muted:#6b7280;
+      --radius:10px; --gap:14px; --maxw:980px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+      display:flex;
+      justify-content:center;
+    }
+    .app{
+      width:100%;
+      max-width:var(--maxw);
+      display:grid;
+      grid-template-columns:260px 1fr;
+      gap:var(--gap);
+      align-items:start;
+    }
+    .sidebar{
+      background:var(--card);
+      padding:18px;
+      border-radius:var(--radius);
+      box-shadow:0 6px 18px rgba(2,6,23,0.06);
+      height:fit-content;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center; margin-bottom:12px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:8px;
+      background:linear-gradient(135deg,var(--accent),#7c3aed);
+      display:flex; align-items:center; justify-content:center;
+      color:white; font-weight:700; font-size:18px;
+    }
+    nav ul{list-style:none; padding:0; margin:0}
+    nav a{
+      display:flex; justify-content:space-between; text-decoration:none;
+      padding:10px 10px; border-radius:8px; color:inherit; margin-bottom:6px;
+      align-items:center;
+    }
+    nav a:hover{background:#f3f4f6}
+    nav a.active{
+      background:linear-gradient(90deg, rgba(37,99,235,0.12), rgba(124,58,237,0.06));
+      border-left:4px solid var(--accent); padding-left:8px;
+    }
+    .submenu{
+      margin-left:6px;
+      display:grid;
+      gap:6px;
+      margin-top:8px;
+      padding-left:6px;
+    }
+    .submenu button{
+      background:transparent; border:none; text-align:left; padding:8px; border-radius:6px; cursor:pointer;
+    }
+    .submenu button:hover{background:#f8fafc}
+    .muted{color:var(--muted); font-size:13px}
+    .main{
+      background:var(--card);
+      padding:20px;
+      border-radius:var(--radius);
+      box-shadow:0 6px 18px rgba(2,6,23,0.04);
+      min-height:400px;
+    }
+    header h1{margin:0 0 6px 0; font-size:20px}
+    header p{margin:0;color:var(--muted);font-size:13px}
+    section{margin-top:18px; display:none}
+    section.active{display:block}
+    form{display:grid; gap:10px; margin-top:8px}
+    input[type="text"], textarea, select{
+      padding:10px; border-radius:8px; border:1px solid #e6e9ef; width:100%;
+      font-size:14px; background:#fff;
+    }
+    button.btn{
+      padding:10px 12px; border-radius:8px; border:none; cursor:pointer;
+      background:var(--accent); color:white; font-weight:600;
+    }
+    .hrow{display:flex; gap:10px}
+    table{width:100%; border-collapse:collapse; margin-top:8px}
+    th, td{padding:10px; text-align:left; border-bottom:1px solid #f1f5f9; font-size:14px}
+    td.actions{width:160px; text-align:right}
+    .chip{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px}
+    @media (max-width:900px){
+      .app{grid-template-columns:1fr; padding:0 8px}
+      .sidebar{order:2}
+      .main{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Aplicação de gestão de tarefas">
+    <aside class="sidebar" aria-label="Menu principal">
+      <div class="brand">
+        <div class="logo">GT</div>
+        <div>
+          <div style="font-weight:700">Gestão de Tarefas</div>
+          <div class="muted" style="margin-top:4px;font-size:12px">Demo local — HTML só</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="menu-item active" data-target="inicio" id="m-inicio">Início <span class="muted">🏠</span></a></li>
+          <li>
+            <a href="#" class="menu-item" data-target="tarefas" id="m-tarefas">Tarefas <span class="muted">🗂️</span></a>
+            <div class="submenu" aria-hidden="false">
+              <button class="sub-item" data-target="tarefas-add">➕ Adicionar</button>
+              <button class="sub-item" data-target="tarefas-list">🔎 Consultar</button>
+              <button class="sub-item" data-target="tarefas-edit">✏️ Editar</button>
+              <button class="sub-item" data-target="tarefas-delete">🗑️ Eliminar</button>
+            </div>
+          </li>
+          <li><a href="#" class="menu-item" data-target="relatorios" id="m-relatorios">Relatórios <span class="muted">📊</span></a></li>
+          <li><a href="#" class="menu-item" data-target="sobre" id="m-sobre">Sobre <span class="muted">ℹ️</span></a></li>
+          <li style="margin-top:12px"><a href="#" class="menu-item" data-target="ajuda" id="m-ajuda">Ajuda & Contacto <span class="muted">❓</span></a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="main" id="main">
+      <header>
+        <h1 id="page-title">Início</h1>
+        <p id="page-desc">Bem-vindo ao sistema de gestão de tarefas (versão HTML). Use o menu à esquerda para navegar.</p>
+      </header>
+
+      <section id="inicio" class="active" aria-labelledby="m-inicio">
+        <h2>Introdução</h2>
+        <p>Esta é uma página estática de exemplo que serve como estrutura para um sistema de tarefas. Mais tarde podemos ligar isto a um backend em Node.js e MySQL para armazenar os dados.</p>
+        <h3>Pontos rápidos</h3>
+        <ul>
+          <li>Adicionar tarefas: formulário rápido para inserir título e descrição.</li>
+          <li>Consultar: ver lista das tarefas.</li>
+          <li>Editar / Eliminar: interfaces básicas para manipular tarefas.</li>
+        </ul>
+      </section>
+
+      <section id="tarefas-add" aria-labelledby="m-tarefas">
+        <h2>Adicionar Tarefa</h2>
+        <p>Preencha os campos e clique em <strong>Adicionar</strong>. (Funcionalidade demo: conecta ao MySQL)</p>
+        <form id="form-add" onsubmit="return false;">
+          <input type="text" id="add-title" placeholder="Título (obrigatório)" required />
+          <textarea id="add-desc" rows="3" placeholder="Descrição (opcional)"></textarea>
+          <div class="hrow">
+            <button class="btn" id="btn-add">Adicionar</button>
+            <button type="button" id="btn-add-clear" style="background:#f3f4f6;color:#111;border-radius:8px;border:1px solid #e6e9ef;padding:10px 12px">Limpar</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="tarefas-list" aria-labelledby="m-tarefas">
+        <h2>Consultar Tarefas</h2>
+        <p>Lista de tarefas armazenadas no MySQL.</p>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="filter" placeholder="Filtrar por título..." />
+          <select id="filter-status"><option value="all">Todos</option><option value="open">Abertas</option><option value="done">Concluídas</option></select>
+          <button id="btn-refresh" style="padding:8px;border-radius:8px;border:1px solid #e6e9ef;background:#fff">Atualizar</button>
+        </div>
+        <table aria-live="polite">
+          <thead><tr><th>#</th><th>Título</th><th>Descrição</th><th>Estado</th><th class="actions">Ações</th></tr></thead>
+          <tbody id="tasks-tbody"></tbody>
+        </table>
+      </section>
+
+      <section id="tarefas-edit" aria-labelledby="m-tarefas">
+        <h2>Editar Tarefa</h2>
+        <p>Escolha uma tarefa na aba <em>Consultar</em> e clique em <strong>Editar</strong>.</p>
+        <form id="form-edit" onsubmit="return false;" style="display:none">
+          <input type="hidden" id="edit-id" />
+          <input type="text" id="edit-title" placeholder="Título" required />
+          <textarea id="edit-desc" rows="3" placeholder="Descrição"></textarea>
+          <div class="hrow">
+            <button class="btn" id="btn-edit-save">Salvar Alterações</button>
+            <button type="button" id="btn-edit-cancel" style="background:#f3f4f6;color:#111;border-radius:8px;border:1px solid #e6e9ef;padding:10px 12px">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="tarefas-delete" aria-labelledby="m-tarefas">
+        <h2>Eliminar Tarefa</h2>
+        <p>Escolha uma tarefa na aba <em>Consultar</em> e clique em <strong>Apagar</strong>. Será pedido para confirmar.</p>
+      </section>
+
+      <section id="relatorios" aria-labelledby="m-relatorios">
+        <h2>Relatórios</h2>
+        <p>Resumo simples:</p>
+        <ul>
+          <li>Total de tarefas: <span id="report-total">0</span></li>
+          <li>Tarefas concluídas: <span id="report-done">0</span></li>
+          <li>Tarefas em aberto: <span id="report-open">0</span></li>
+        </ul>
+      </section>
+
+      <section id="sobre" aria-labelledby="m-sobre">
+        <h2>Sobre</h2>
+        <p>Esta página foi criada como esqueleto para um sistema de gestão de tarefas.</p>
+      </section>
+
+      <section id="ajuda" aria-labelledby="m-ajuda">
+        <h2>Ajuda & Contacto</h2>
+        <p>Se precisar de ajuda para ligar a um banco de dados ou criar APIs em Node.js, peça e eu providencio os ficheiros e instruções passo a passo.</p>
+      </section>
+    </main>
+  </div>
+
+<script>
+const menuItems = document.querySelectorAll('.menu-item');
+const subItems = document.querySelectorAll('.sub-item');
+const sections = document.querySelectorAll('section');
+
+function showSection(id){
+  sections.forEach(s => s.classList.toggle('active', s.id === id));
+}
+menuItems.forEach(mi=>{
+  mi.onclick = e=>{
+    e.preventDefault();
+    showSection(mi.dataset.target === 'tarefas' ? 'tarefas-list' : mi.dataset.target);
+  }
+});
+subItems.forEach(si=> si.onclick = ()=> showSection(si.dataset.target));
+
+const addTitle = document.getElementById("add-title");
+const addDesc = document.getElementById("add-desc");
+const btnAdd = document.getElementById("btn-add");
+const editId = document.getElementById("edit-id");
+const editTitle = document.getElementById("edit-title");
+const editDesc = document.getElementById("edit-desc");
+const btnEditSave = document.getElementById("btn-edit-save");
+
+async function loadTasks(){
+  const res = await fetch("/tasks");
+  return await res.json();
+}
+
+async function renderTasksTable(){
+  const tbody = document.getElementById("tasks-tbody");
+  tbody.innerHTML = "";
+  const tasks = await loadTasks();
+
+  tasks.forEach((t,i)=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${t.title}</td>
+        <td>${t.description || ""}</td>
+        <td>${t.completed ? "Concluída" : "Em aberto"}</td>
+        <td>
+          <button onclick="markToggle(${t.id})">✓</button>
+          <button onclick="startEdit(${t.id})">✏️</button>
+          <button onclick="doDelete(${t.id})">🗑️</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("report-total").innerText = tasks.length;
+  document.getElementById("report-done").innerText = tasks.filter(t=>t.completed).length;
+  document.getElementById("report-open").innerText = tasks.filter(t=>!t.completed).length;
+}
+
+btnAdd.onclick = async ()=>{
+  if(!addTitle.value) return alert("Título obrigatório");
+
+  await fetch("/tasks",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      title:addTitle.value,
+      description:addDesc.value
+    })
+  });
+
+  addTitle.value = "";
+  addDesc.value = "";
+  renderTasksTable();
+  showSection("tarefas-list");
+};
+
+window.markToggle = async id=>{
+  await fetch(`/tasks/${id}`,{method:"PUT"});
+  renderTasksTable();
+};
+
+window.startEdit = async id=>{
+  const tasks = await loadTasks();
+  const t = tasks.find(t=>t.id===id);
+  if(!t) return alert("Tarefa não encontrada");
+  editId.value = t.id;
+  editTitle.value = t.title;
+  editDesc.value = t.description;
+  showSection("tarefas-edit");
+};
+
+btnEditSave.onclick = async ()=>{
+  await fetch(`/tasks/edit/${editId.value}`,{
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      title:editTitle.value,
+      description:editDesc.value
+    })
+  });
+  renderTasksTable();
+  showSection("tarefas-list");
+};
+
+window.doDelete = async id=>{
+  if(!confirm("Apagar tarefa?")) return;
+  await fetch(`/tasks/${id}`,{method:"DELETE"});
+  renderTasksTable();
+};
+
+document.addEventListener("DOMContentLoaded",()=>{
+  renderTasksTable();
+  showSection("inicio");
+});
+</script>
+
+</body>
+</html>
